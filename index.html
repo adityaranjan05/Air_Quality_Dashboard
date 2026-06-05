@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Air Quality Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div id="navbar_wrapper">
+      <div class="navbar">
+        <h2>AirQuality</h2>
+        <h2>Dashboard</h2>
+        <div class="nav_links">
+          <a href="#">Home</a>
+          <a href="#">About</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="app_wrapper">
+      <!-- Search Bar -->
+      <div class="search_section">
+        <h1>Air Quality Dashboard</h1>
+        <p class="subtitle">
+          Check real-time air quality, weather conditions, and pollutant levels
+          for any city.
+        </p>
+        <input type="text" id="cityInput" placeholder="Enter city name..." />
+        <button id="searchBtn">Search</button>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main_content">
+        <!-- AQI Card -->
+        <div class="card aqi_card">
+          <h3>Air Quality Index</h3>
+          <p class="aqi_number" id="aqiNumber">--</p>
+          <p class="aqi_status" id="aqiStatus">--</p>
+          <p id="cityName">Search a city to get started</p>
+        </div>
+
+        <!-- Weather Info -->
+        <div class="card weather_card">
+          <h3>Weather</h3>
+          <p>Temperature: <span id="temp">--</span></p>
+          <p>Humidity: <span id="humidity">--</span></p>
+          <p>Wind Speed: <span id="wind">--</span></p>
+        </div>
+
+        <!-- Pollutants -->
+        <div class="card pollutants_card">
+          <h3>Pollutants</h3>
+          <p>PM2.5: <span id="pm25">--</span></p>
+          <p>PM10: <span id="pm10">--</span></p>
+          <p>NO2: <span id="no2">--</span></p>
+          <p>CO: <span id="co">--</span></p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>

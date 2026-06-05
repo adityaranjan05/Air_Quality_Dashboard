@@ -1,0 +1,26 @@
+{
+  "name": "airquality-dashboard",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "previw": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adityaranjan05/Air_Quality_Dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/adityaranjan05/Air_Quality_Dashboard/issues"
+  },
+  "homepage": "https://github.com/adityaranjan05/Air_Quality_Dashboard#readme",
+  "devDependencies": {
+    "vite": "^8.0.16"
+  }
+}
