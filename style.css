@@ -53,9 +53,12 @@ body {
 .nav_links a {
   text-decoration: none;
   color: white;
+  z-index: 1;
   padding: 12px 16px;
   border-radius: 10px;
   transition: all 0.3s ease;
+  border-bottom: 0.2rem solid black;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);;
 }
 
 .nav_links a:hover {
@@ -98,6 +101,10 @@ body {
 
 .search_section input:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.search_section input:focus {
+  border: 1px solid black;
 }
 
 .search_section button {
