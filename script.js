@@ -14,14 +14,30 @@ const getWeatherData = async () => {
     try {
         const cityLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${api_key}`;
         // console.log(cityLocation);
-        // const api1 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`;
-
         const geoResponse = await fetch(cityLocation);
         const geoData = await geoResponse.json();
-        console.log(geoData);
+        if (geoData.length === 0) {
+        alert("City not found");
+        return;
+        }
+        const lat = geoData[0].lat;
+        const lon = geoData[0].lon;
+        // console.log(geoData);
+
+        const api1 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`;
+        const weatherResponse = await fetch(api1);
+        const weatherData = await weatherResponse.json();
+        console.log(weatherData);
+        
+        const temp = weatherData["main"]["temp"];
+        const humidity = weatherData["main"]["humidity"];
+        const windSpeed = weatherData["wind"]["speed"];
+
+        
     }
-    catch(error){
+    catch (error) {
         console.error(error);
     }
-}
+};
 // getWeatherData()
+searchBtn.addEventListener("click", getWeatherData);
