@@ -16,18 +16,18 @@ const aqi_status_list = [
     "Very Poor"
 ];
 const colors = [
-    "#10b981", // Good - Emerald
-    "#84cc16", // Fair - Lime
-    "#f59e0b", // Moderate - Amber
-    "#f97316", // Poor - Orange
-    "#dc2626"  // Very Poor - Red
+  "#059669", // Good - Dark Emerald
+  "#65a30d", // Fair - Olive Green
+  "#d97706", // Moderate - Dark Amber
+  "#ea580c", // Poor - Dark Orange
+  "#b91c1c"  // Very Poor - Dark Red
 ];
 const backgrounds = [
-    "#ecfdf5", // Good
-    "#f7fee7", // Fair
-    "#fffbeb", // Moderate
-    "#fff7ed", // Poor
-    "#fef2f2"  // Very Poor
+  "#d1fae5",
+  "#ecfccb",
+  "#fef3c7",
+  "#fed7aa",
+  "#fecaca"
 ];
 
 const getWeatherData = async () => {
@@ -38,7 +38,7 @@ const getWeatherData = async () => {
     }
     try {
         // LOCATION DATA
-        
+        cityInput.value = "";
         const cityLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=5&appid=${api_key}`;
         console.log(cityLocation);
         const geoResponse = await fetch(cityLocation);
@@ -80,13 +80,7 @@ const getWeatherData = async () => {
         const aqi_status = aqi_status_list[aqi-1];
         const aqi_color = colors[aqi-1];
         const aqi_bg = backgrounds[aqi - 1];
-        document.body.style.background = `
-linear-gradient(
-135deg,
-${aqi_bg},
-white
-)
-`;
+        document.body.style.background = `linear-gradient(135deg,${aqi_bg},white)`;
 
         // ADDING DATA TO CARDS
         weather_card.innerHTML = `
