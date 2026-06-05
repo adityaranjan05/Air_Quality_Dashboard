@@ -63,6 +63,7 @@ const getWeatherData = async () => {
         const temp = weatherData["main"]["temp"];
         const humidity = weatherData["main"]["humidity"];
         const windSpeed = weatherData["wind"]["speed"];
+        const description = weatherData.weather[0].description;
 
         // AQI AND POLLUTANTS DATA
         
@@ -79,15 +80,23 @@ const getWeatherData = async () => {
         const aqi_status = aqi_status_list[aqi-1];
         const aqi_color = colors[aqi-1];
         const aqi_bg = backgrounds[aqi - 1];
+        document.body.style.background = `
+linear-gradient(
+135deg,
+${aqi_bg},
+white
+)
+`;
 
         // ADDING DATA TO CARDS
         weather_card.innerHTML = `
             <div class="card weather_card" style="border-left:8px solid ${aqi_color};
             background:${aqi_bg};">
                 <h3>Weather</h3>
+                <p>Condition: ${description}</p>
                 <p>Temperature: <span id="temp">${temp} °C</span></p>
                 <p>Humidity: <span id="humidity">${humidity} %</span></p>
-                <p>Wind Speed: <span id="wind">${windSpeed} m//s</span></p>
+                <p>Wind Speed: <span id="wind">${windSpeed} m/s</span></p>
             </div>
         `;
 
@@ -95,6 +104,7 @@ const getWeatherData = async () => {
             <div class="card aqi_card" style="border-left:8px solid ${aqi_color};
             background:${aqi_bg};">
                 <h3>Air Quality Index</h3>
+                <p id="cityName" style="color: ${aqi_color}">${geoData[0].name}</p>
                 <p class="aqi_number" id="aqiNumber" style="color: ${aqi_color}">${aqi}</p>
                 <p class="aqi_status" id="aqiStatus" style="color: ${aqi_color}">${aqi_status}</p>
             </div>
