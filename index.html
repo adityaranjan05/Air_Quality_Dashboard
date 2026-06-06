@@ -24,7 +24,7 @@
         <div class="nav_links">
           <a href="index.html">Dashboard</a>
           <a href="compare.html">Compare Cities</a>
-          <a href="compare.html"></a>
+          <a href="guide.html">Guide</a>
           <a href="#">About</a>
         </div>
       </div>
@@ -45,6 +45,7 @@
 
       <!-- Main Content -->
       <div class="main_content">
+        
         <!-- AQI Card -->
         <div id="aqi_card_wrapper">
           <div class="card aqi_card">
@@ -59,6 +60,7 @@
         <div id="weather_card_wrapper">
           <div class="card weather_card">
             <h3>Weather</h3>
+            <p>Condition: <span id="condition">--</span></p>
             <p>Temperature: <span id="temp">--</span></p>
             <p>Humidity: <span id="humidity">--</span></p>
             <p>Wind Speed: <span id="wind">--</span></p>
@@ -75,13 +77,22 @@
             <p>CO: <span id="co">--</span></p>
           </div>
         </div>
+
+        <!-- Recommendations -->
+         <div id="recommendations_card_wrapper">
+          <div class="card recommendations_card">
+            <h3>Recommendations</h3>
+            <p class="recommendations_text" id="recommendations">--</p>
+            <p id="cityName">Search a city to get started</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- MAP CONTAINER -->
+    <!-- VISUALIZATION CONTAINER -->
 
     <div class="visualization_section">
-      <div class="chart-container">
+      <div class="chart_container">
         <canvas id="pollutantChart"></canvas>
       </div>
 

@@ -139,7 +139,7 @@ body {
 
 .card {
   width: 300px;
-  min-height: 300px;
+  min-height: 40vh;
   background: white;
   padding: 25px;
   border-radius: 18px;
@@ -154,7 +154,7 @@ body {
 }
 
 .card h3 {
-  color: #2563eb;
+  color: #0918ec;
   margin-bottom: 18px;
   padding-bottom: 10px;
   border-bottom: 2px solid #242222;
@@ -163,10 +163,11 @@ body {
 .card p {
   margin-bottom: 12px;
   line-height: 1.5;
+  font-weight: 600;
 }
 
 .aqi_number {
-  font-size: 70px;
+  font-size: 90px;
   font-weight: bold;
   text-align: center;
   color: #1e3a8a;
@@ -190,6 +191,12 @@ body {
   color: #666;
 }
 
+.recommendations_text {
+  text-align: center;
+  color: #1e3a8a;
+  margin: 15px 0;
+}
+
 .visualization_section {
   display: flex;
   gap: 25px;
@@ -197,20 +204,35 @@ body {
   margin-left: 220px;
 }
 
-.chart-container {
+.chart_container {
   flex: 1;
   background: white;
   padding: 1rem;
   border-radius: 18px;
   box-shadow: 0 5px 15px rgba(0,0,0,.2);
+  animation: slide-in 0.3s ease-in-out;
+  height: 55vh;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 #map_wrapper {
   flex: 1;
+  animation: slide-in 0.3s ease-in-out;
 }
 
 #map {
-  height: 500px;
+  height: 55vh;
   width: 100%;
   border-radius: 18px;
   box-shadow: 0 5px 15px rgba(0,0,0,.2);

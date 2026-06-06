@@ -8,6 +8,10 @@ const searchBtn = document.querySelector("#searchBtn");
 const aqi_card = document.querySelector("#aqi_card_wrapper");
 const weather_card = document.querySelector("#weather_card_wrapper");
 const pollutants_card = document.querySelector("#pollutants_card_wrapper");
+const recommendations_card = document.querySelector("#recommendations_card_wrapper");
+
+let recommendation = "";
+
 const aqi_status_list = [
     "Good",
     "Fair",
@@ -16,11 +20,11 @@ const aqi_status_list = [
     "Very Poor"
 ];
 const colors = [
-  "#059669", // Good - Dark Emerald
-  "#65a30d", // Fair - Olive Green
-  "#d97706", // Moderate - Dark Amber
-  "#ea580c", // Poor - Dark Orange
-  "#b91c1c"  // Very Poor - Dark Red
+  "#059669", // Good
+  "#65a30d", // Fair
+  "#d97706", // Moderate
+  "#ea580c", // Poor
+  "#b91c1c"  // Very Poor
 ];
 const backgrounds = [
   "#d1fae5",
@@ -50,7 +54,6 @@ pollutantChart = new Chart(ctx, {
             borderRadius: 18
         }]
     },
-
     options: {
         responsive: true,
         maintainAspectRatio: false,
@@ -112,7 +115,7 @@ const getWeatherData = async () => {
         const temp = weatherData["main"]["temp"];
         const humidity = weatherData["main"]["humidity"];
         const windSpeed = weatherData["wind"]["speed"];
-        const description = weatherData.weather[0].description;
+        const description = weatherData.weather[0].description.charAt(0).toUpperCase() + weatherData.weather[0].description.slice(1);
 
         // AQI AND POLLUTANTS DATA
         
@@ -130,12 +133,52 @@ const getWeatherData = async () => {
         const aqi_color = colors[aqi-1];
         const aqi_bg = backgrounds[aqi - 1];
         document.body.style.background = `linear-gradient(135deg,${aqi_bg},white)`;
+        
+        switch (aqi) {
+            case 1:
+                recommendation = `-Excellent air quality
+                -Perfect for outdoor activities
+                -Great time for exercise and jogging
+                `;
+                break;
+
+            case 2:
+                recommendation = `-Air quality is acceptable
+                -Safe for most outdoor activities
+                -No significant health concerns
+                `;
+                break;
+
+            case 3:
+                recommendation = `-Moderate air quality
+                -Sensitive individuals should be cautious
+                -Reduce prolonged outdoor exercise
+                -Consider staying indoors during peak traffic hours
+                `;
+                break;
+
+            case 4:
+                recommendation = `-Poor air quality
+                -Wear a mask outdoors if possible
+                -Avoid strenuous outdoor activities
+                -Keep windows closed during polluted periods
+                `;
+                break;
+
+            case 5:
+                recommendation = `-Very poor air quality
+                -Wear a high-quality mask when outdoors
+                -Avoid outdoor exercise and long exposure
+                -Extra care for children, elderly, and people with respiratory issues
+                `;
+                break;
+        }
 
         // ADDING DATA TO CARDS
         weather_card.innerHTML = `
             <div class="card weather_card" style="border-left:8px solid ${aqi_color};
             background:${aqi_bg};">
-                <h3>Weather</h3>
+                <h3 style="color:${aqi_color}">Weather</h3>
                 <p>Condition: ${description}</p>
                 <p>Temperature: <span id="temp">${temp} °C</span></p>
                 <p>Humidity: <span id="humidity">${humidity} %</span></p>
@@ -146,7 +189,7 @@ const getWeatherData = async () => {
         aqi_card.innerHTML = `
             <div class="card aqi_card" style="border-left:8px solid ${aqi_color};
             background:${aqi_bg};">
-                <h3>Air Quality Index</h3>
+                <h3 style="color:${aqi_color}">Air Quality Index</h3>
                 <p id="cityName" style="color: ${aqi_color}">${geoData[0].name}</p>
                 <p class="aqi_number" id="aqiNumber" style="color: ${aqi_color}">${aqi}</p>
                 <p class="aqi_status" id="aqiStatus" style="color: ${aqi_color}">${aqi_status}</p>
@@ -156,7 +199,7 @@ const getWeatherData = async () => {
         pollutants_card.innerHTML = `
             <div class="card pollutants_card" style="border-left:8px solid ${aqi_color};
             background:${aqi_bg};">
-            <h3>Pollutants</h3>
+            <h3 style="color:${aqi_color}">Pollutants</h3>
                 <p>PM2.5: <span id="pm25">${pm2_5} μg/m³</span></p>
                 <p>PM10: <span id="pm10">${pm10} μg/m³</span></p>
                 <p>NO2: <span id="no2">${no2} μg/m³</span></p>
@@ -164,6 +207,16 @@ const getWeatherData = async () => {
             </div>
         `;
 
+        recommendations_card.innerHTML = `
+            <div class="card recommendation_card"
+            style="border-left:8px solid ${aqi_color};
+            background:${aqi_bg};">
+                <h3 style="color:${aqi_color}">Recommendations</h3>
+                <p style="white-space: pre-line;">
+                    ${recommendation}
+                </p>
+            </div>
+`;
         // CHART
 
         const ctx = document.getElementById("pollutantChart");
