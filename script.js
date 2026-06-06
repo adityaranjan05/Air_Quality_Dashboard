@@ -30,6 +30,55 @@ const backgrounds = [
   "#fecaca"
 ];
 
+let pollutantChart = null;
+
+const ctx = document.getElementById("pollutantChart");
+
+pollutantChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: ["PM2.5", "PM10", "NO2", "CO"],
+        datasets: [{
+            label: "Search a city to view pollutant data",
+            data: [0, 0, 0, 0],
+            backgroundColor: [
+                "#3b82f6",
+                "#10b981",
+                "#f59e0b",
+                "#ef4444"
+            ],
+            borderRadius: 18
+        }]
+    },
+
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+    }
+});
+
+const map = L.map("map").setView([20, 0], 2);
+const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution:
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+}).addTo(map);
+
+
+let marker = null;
+
+const popup = L.popup();
+function onMapClick(e) {
+    popup
+        .setLatLng(e.latlng)
+        .setContent(`
+            Latitude: ${e.latlng.lat.toFixed(4)}<br>
+            Longitude: ${e.latlng.lng.toFixed(4)}
+        `)
+        .openOn(map);
+}
+map.on('click', onMapClick);
+
 const getWeatherData = async () => {
     const city = cityInput.value;
     if (!city.trim()) {
@@ -114,10 +163,74 @@ const getWeatherData = async () => {
                 <p>CO: <span id="co">${co} μg/m³</span></p>
             </div>
         `;
+
+        // CHART
+
+        const ctx = document.getElementById("pollutantChart");
+        if (pollutantChart) {
+            pollutantChart.destroy();
+        }
+        pollutantChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: [
+                    "PM2.5",
+                    "PM10",
+                    "NO2",
+                    "CO"
+                ],
+                datasets: [{
+                    label: "Pollutant Levels (μg/m³)",
+                    data: [pm2_5, pm10, no2, co],
+                    barThickness: 30,
+                    backgroundColor: [
+                        "#3b82f6",
+                        "#10b981",
+                        "#f59e0b",
+                        "#ef4444"
+                    ],
+                    borderRadius: 18
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // MAP
+
+        map.flyTo([lat, lon], 13, {duration: 2} );
+        if (marker) {
+            marker.setLatLng([lat, lon]);
+            marker.bindPopup(`
+                <b>${geoData[0].name}, ${geoData[0].country}</b><br>
+                AQI: ${aqi} (${aqi_status})<br>
+                Temp: ${temp}°C
+            `);
+        }
+        else {
+            marker = L.marker([lat, lon])
+                .addTo(map)
+                .bindPopup(`
+                    <b>${geoData[0].name}, ${geoData[0].country}</b><br>
+                    AQI: ${aqi} (${aqi_status})<br>
+                    Temp: ${temp}°C
+                `);
+        }
     }
     catch (error) {
+        alert("Unable to fetch data. Please try again.");
         console.error(error);
+        searchBtn.textContent = "Search";
+        searchBtn.disabled = false;
     }
 };
-// getWeatherData()
+
 searchBtn.addEventListener("click", getWeatherData);
+
+cityInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        getWeatherData();
+    }
+});
