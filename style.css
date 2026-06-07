@@ -425,4 +425,9 @@ section {
     height: 500px;
     padding: 0.5rem;
   }
+
+  #compareChart {
+    height: 500px;
+    width: 100%;
+  }
 }
