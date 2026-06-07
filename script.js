@@ -63,6 +63,10 @@ pollutantChart = new Chart(ctx, {
     options: {
         responsive: true,
         maintainAspectRatio: false,
+        scales: {
+            x: { ticks: { color: "rgba(255,255,255,0.6)", font: { family: "Lexend" } }, grid: { color: "rgba(255,255,255,0.07)" } },
+            y: { ticks: { color: "rgba(255,255,255,0.6)", font: { family: "Lexend" } }, grid: { color: "rgba(255,255,255,0.07)" } }
+        }
     }
 });
 
@@ -101,6 +105,8 @@ const getWeatherData = async () => {
         console.log(cityLocation);
         const geoResponse = await fetch(cityLocation);
         const geoData = await geoResponse.json();
+        searchBtn.textContent = "Loading…";
+    searchBtn.disabled = true;
 
         if (geoData.length === 0) {
         alert("City not found");
@@ -153,64 +159,49 @@ const getWeatherData = async () => {
         const aqi_status = aqi_status_list[us_aqi-1];
         const aqi_color = colors[us_aqi-1];
         const aqi_bg = backgrounds[us_aqi - 1];
-        document.body.style.background = `linear-gradient(135deg,${aqi_bg},white)`;
+        // document.body.style.background = `linear-gradient(135deg,${aqi_bg},white)`;
         
         switch (us_aqi) {
             case 1:
-                recommendation = `- Air quality is excellent
-                - Ideal for outdoor exercise and sports
-                - Safe for children and older adults
-                - Enjoy outdoor activities freely
+                recommendation = `• Ideal for outdoor exercise and sports.
+                • Safe for all age groups — enjoy freely.
                 `;
                 break;
 
             case 2:
-                recommendation = `• Air quality is acceptable
-                • Most people can continue normal activities
-                • Sensitive individuals should monitor symptoms
-                • Outdoor activities remain generally safe
+                recommendation = `• Air quality is acceptable.
+                • Sensitive individuals should monitor symptoms.
                 `;
                 break;
 
             case 3:
-                recommendation = `• Children and elderly should limit prolonged outdoor activity
-                • People with asthma or respiratory conditions should take precautions
-                • Consider wearing a mask in crowded areas
-                • Reduce intense outdoor workouts
+                recommendation = `• Children and elderly should limit prolonged outdoor activity.
+                • Consider a mask in crowded areas.
                 `;
                 break;
 
             case 4:
-                recommendation = `• Limit outdoor exposure when possible
-                • Avoid strenuous exercise outdoors
-                • Wear a mask when spending long periods outside
-                • Keep doors and windows closed during peak pollution hours
+                recommendation = `• Limit outdoor exposure. Avoid strenuous exercise outside.
+                • Keep windows closed during peak hours.
                 `;
                 break;
 
             case 5:
-                recommendation = `• Avoid outdoor exercise
-                • Use an N95 or equivalent mask outdoors
-                • Stay indoors whenever possible
-                • Use air purifiers if available
-                • Extra caution for children, elderly, and people with health conditions
+                recommendation = `• Avoid outdoor exercise. Use an N95 mask outdoors.
+                • Stay indoors and use air purifiers if available.
                 `;
                 break;
             case 6:
-                recommendation = `• Remain indoors as much as possible
-                • Avoid all unnecessary outdoor activities
-                • Wear a high-quality mask if going outside is unavoidable
-                • Use air purification and ventilation systems
-                • Follow local health advisories and warnings
+                recommendation = `• Remain indoors. Avoid all unnecessary outdoor activities.
+                • Follow local health advisories closely.
                 `;
                 break;
         }
 
         // ADDING DATA TO CARDS
         weather_card.innerHTML = `
-            <div class="card weather_card" style="border-left:8px solid ${aqi_color};
-            background:${aqi_bg};">
-                <h3 style="color:${aqi_color}">Weather</h3>
+            <div class="card weather_card">
+                <h3>Weather</h3>
                 <p>Condition: ${description}</p>
                 <p>Temperature: <span id="temp">${temp} °C</span></p>
                 <p>Humidity: <span id="humidity">${humidity} %</span></p>
@@ -219,19 +210,17 @@ const getWeatherData = async () => {
         `;
 
         aqi_card.innerHTML = `
-            <div class="card aqi_card" style="border-left:8px solid ${aqi_color};
-            background:${aqi_bg};">
-                <h3 style="color:${aqi_color}">Air Quality Index</h3>
-                <p id="cityName" style="color: ${aqi_color}">${locationName}</p>
+            <div class="card aqi_card">
+                <h3>Air Quality Index</h3>
+                <p id="cityName">${locationName}</p>
                 <p class="aqi_number" id="aqiNumber" style="color: ${aqi_color}">${aqi}</p>
-                <p class="aqi_status" id="aqiStatus" style="color: ${aqi_color}">${aqi_status}</p>
+                <p class="aqi_status" id="aqiStatus">${aqi_status}</p>
             </div>
         `;
 
         pollutants_card.innerHTML = `
-            <div class="card pollutants_card" style="border-left:8px solid ${aqi_color};
-            background:${aqi_bg};">
-            <h3 style="color:${aqi_color}">Pollutants</h3>
+            <div class="card pollutants_card">
+            <h3>Pollutants</h3>
                 <p>SO2: <span id="so2">${so2} μg/m³</span></p>
                 <p>PM2.5: <span id="pm2_5">${pm2_5} μg/m³</span></p>
                 <p>PM10: <span id="pm10">${pm10} μg/m³</span></p>
@@ -241,10 +230,8 @@ const getWeatherData = async () => {
         `;
 
         recommendations_card.innerHTML = `
-            <div class="card recommendation_card"
-            style="border-left:8px solid ${aqi_color};
-            background:${aqi_bg};">
-                <h3 style="color:${aqi_color}">Recommendations</h3>
+            <div class="card recommendation_card">
+                <h3>Recommendations</h3>
                 <p style="white-space: pre-line;">
                     ${recommendation}
                 </p>
@@ -282,7 +269,11 @@ const getWeatherData = async () => {
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                scales: {
+                    x: { ticks: { color: "rgba(255,255,255,0.6)", font: { family: "Lexend" } }, grid: { color: "rgba(255,255,255,0.07)" } },
+                    y: { ticks: { color: "rgba(255,255,255,0.6)", font: { family: "Lexend" } }, grid: { color: "rgba(255,255,255,0.07)" } }
+                }
             }
         });
 
@@ -313,6 +304,8 @@ const getWeatherData = async () => {
     catch (error) {
         alert("Unable to fetch data. Please try again.");
         console.error(error);
+    }
+    finally {
         searchBtn.textContent = "Search";
         searchBtn.disabled = false;
     }
