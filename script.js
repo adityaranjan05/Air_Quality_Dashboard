@@ -268,7 +268,7 @@ const getWeatherData = async () => {
                 ],
                 datasets: [{
                     label: "Pollutant Levels (μg/m³)",
-                    data: [s02, pm2_5, pm10, no2, co],
+                    data: [so2, pm2_5, pm10, no2, co],
                     barThickness: 30,
                     backgroundColor: [
                         "#3b82f6",
