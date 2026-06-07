@@ -1,6 +1,7 @@
 "use strict";
 
 const api_key = import.meta.env.VITE_WEATHER_API_KEY;
+
 // console.log(api);
 // console.log(import.meta.env.VITE_weather_API_Key);
 const cityInput = document.querySelector("#cityInput");
@@ -9,29 +10,33 @@ const aqi_card = document.querySelector("#aqi_card_wrapper");
 const weather_card = document.querySelector("#weather_card_wrapper");
 const pollutants_card = document.querySelector("#pollutants_card_wrapper");
 const recommendations_card = document.querySelector("#recommendations_card_wrapper");
+let locationName;
 
 let recommendation = "";
 
 const aqi_status_list = [
     "Good",
-    "Fair",
     "Moderate",
-    "Poor",
-    "Very Poor"
+    "Unhealthy for Sensitive Groups",
+    "Unhealthy",
+    "Very Unhealthy",
+    "Hazardous"
 ];
 const colors = [
-  "#059669", // Good
-  "#65a30d", // Fair
-  "#d97706", // Moderate
-  "#ea580c", // Poor
-  "#b91c1c"  // Very Poor
+    "#16a34a", // Good
+    "#84cc16", // Moderate
+    "#eab308", // Unhealthy for Sensitive Groups
+    "#f97316", // Unhealthy
+    "#dc2626", // Very Unhealthy
+    "#7f1d1d"  // Hazardous
 ];
 const backgrounds = [
-  "#d1fae5",
-  "#ecfccb",
-  "#fef3c7",
-  "#fed7aa",
-  "#fecaca"
+    "#dcfce7", // Good
+    "#ecfccb", // Moderate
+    "#fef9c3", // Unhealthy for Sensitive Groups
+    "#ffedd5", // Unhealthy
+    "#fee2e2", // Very Unhealthy
+    "#fecaca"  // Hazardous
 ];
 
 let pollutantChart = null;
@@ -41,15 +46,16 @@ const ctx = document.getElementById("pollutantChart");
 pollutantChart = new Chart(ctx, {
     type: "bar",
     data: {
-        labels: ["PM2.5", "PM10", "NO2", "CO"],
+        labels: ["SO2", "PM2.5", "PM10", "NO2", "CO"],
         datasets: [{
             label: "Search a city to view pollutant data",
-            data: [0, 0, 0, 0],
+            data: [0, 0, 0, 0, 0],
             backgroundColor: [
-                "#3b82f6",
-                "#10b981",
-                "#f59e0b",
-                "#ef4444"
+                "#3b82f6", // SO2
+                "#10b981", // PM2.5
+                "#f59e0b", // PM10
+                "#ef4444", // NO2
+                "#8b5cf6"  // CO
             ],
             borderRadius: 18
         }]
@@ -91,7 +97,7 @@ const getWeatherData = async () => {
     try {
         // LOCATION DATA
         cityInput.value = "";
-        const cityLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=5&appid=${api_key}`;
+        const cityLocation = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=10&appid=${api_key}`;
         console.log(cityLocation);
         const geoResponse = await fetch(cityLocation);
         const geoData = await geoResponse.json();
@@ -104,72 +110,98 @@ const getWeatherData = async () => {
         const lat = geoData[0].lat;
         const lon = geoData[0].lon;
         console.log(geoData);
+        if (geoData[0].state) {
+            locationName = `${geoData[0].name}, ${geoData[0].state}, ${geoData[0].country}`;
+        }
+        else {
+            locationName = `${geoData[0].name}, ${geoData[0].country}`;
+        }
 
         // WEATHER DATA
 
-        const api1 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`;
-        const weatherResponse = await fetch(api1);
+        const weather_api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}&units=metric`;
+        const weatherResponse = await fetch(weather_api);
         const weatherData = await weatherResponse.json();
         console.log(weatherData);
         
-        const temp = weatherData["main"]["temp"];
-        const humidity = weatherData["main"]["humidity"];
-        const windSpeed = weatherData["wind"]["speed"];
+        const temp = Math.round(weatherData["main"]["temp"]);
+        const humidity = Math.round(weatherData["main"]["humidity"]);
+        const windSpeed = Math.round(weatherData["wind"]["speed"]);
         const description = weatherData.weather[0].description.charAt(0).toUpperCase() + weatherData.weather[0].description.slice(1);
 
         // AQI AND POLLUTANTS DATA
         
-        const api2 = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${api_key}`;
-        const aqiResponse = await fetch(api2);
+        const aqi_api = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`;
+        const aqiResponse = await fetch(aqi_api);
         const aqiData = await aqiResponse.json();
         console.log(aqiData);
 
-        const aqi = aqiData.list[0]["main"]["aqi"];
-        const pm2_5 = aqiData.list[0]["components"]["pm2_5"];
-        const pm10 = aqiData.list[0]["components"]["pm10"];
-        const no2 = aqiData.list[0]["components"]["no2"];
-        const co = aqiData.list[0]["components"]["co"];
-        const aqi_status = aqi_status_list[aqi-1];
-        const aqi_color = colors[aqi-1];
-        const aqi_bg = backgrounds[aqi - 1];
+        const aqi = Math.round(aqiData["current"]["us_aqi"]);
+        const so2 = Math.round(aqiData["current"]["sulphur_dioxide"]);
+        const pm10 = Math.round(aqiData["current"]["pm10"]);
+        const pm2_5 = Math.round(aqiData["current"]["pm2_5"]);
+        const no2 = Math.round(aqiData["current"]["nitrogen_dioxide"]);
+        const co = Math.round(aqiData["current"]["carbon_monoxide"]);
+        
+        let us_aqi;
+        if (aqi <= 50 && aqi >= 0) us_aqi = 1;
+        else if (aqi <= 100) us_aqi = 2;
+        else if (aqi <= 150) us_aqi = 3;
+        else if (aqi <= 200) us_aqi = 4;
+        else if (aqi <= 300) us_aqi = 5;
+        else us_aqi = 6;
+        const aqi_status = aqi_status_list[us_aqi-1];
+        const aqi_color = colors[us_aqi-1];
+        const aqi_bg = backgrounds[us_aqi - 1];
         document.body.style.background = `linear-gradient(135deg,${aqi_bg},white)`;
         
-        switch (aqi) {
+        switch (us_aqi) {
             case 1:
-                recommendation = `-Excellent air quality
-                -Perfect for outdoor activities
-                -Great time for exercise and jogging
+                recommendation = `- Air quality is excellent
+                - Ideal for outdoor exercise and sports
+                - Safe for children and older adults
+                - Enjoy outdoor activities freely
                 `;
                 break;
 
             case 2:
-                recommendation = `-Air quality is acceptable
-                -Safe for most outdoor activities
-                -No significant health concerns
+                recommendation = `• Air quality is acceptable
+                • Most people can continue normal activities
+                • Sensitive individuals should monitor symptoms
+                • Outdoor activities remain generally safe
                 `;
                 break;
 
             case 3:
-                recommendation = `-Moderate air quality
-                -Sensitive individuals should be cautious
-                -Reduce prolonged outdoor exercise
-                -Consider staying indoors during peak traffic hours
+                recommendation = `• Children and elderly should limit prolonged outdoor activity
+                • People with asthma or respiratory conditions should take precautions
+                • Consider wearing a mask in crowded areas
+                • Reduce intense outdoor workouts
                 `;
                 break;
 
             case 4:
-                recommendation = `-Poor air quality
-                -Wear a mask outdoors if possible
-                -Avoid strenuous outdoor activities
-                -Keep windows closed during polluted periods
+                recommendation = `• Limit outdoor exposure when possible
+                • Avoid strenuous exercise outdoors
+                • Wear a mask when spending long periods outside
+                • Keep doors and windows closed during peak pollution hours
                 `;
                 break;
 
             case 5:
-                recommendation = `-Very poor air quality
-                -Wear a high-quality mask when outdoors
-                -Avoid outdoor exercise and long exposure
-                -Extra care for children, elderly, and people with respiratory issues
+                recommendation = `• Avoid outdoor exercise
+                • Use an N95 or equivalent mask outdoors
+                • Stay indoors whenever possible
+                • Use air purifiers if available
+                • Extra caution for children, elderly, and people with health conditions
+                `;
+                break;
+            case 6:
+                recommendation = `• Remain indoors as much as possible
+                • Avoid all unnecessary outdoor activities
+                • Wear a high-quality mask if going outside is unavoidable
+                • Use air purification and ventilation systems
+                • Follow local health advisories and warnings
                 `;
                 break;
         }
@@ -190,7 +222,7 @@ const getWeatherData = async () => {
             <div class="card aqi_card" style="border-left:8px solid ${aqi_color};
             background:${aqi_bg};">
                 <h3 style="color:${aqi_color}">Air Quality Index</h3>
-                <p id="cityName" style="color: ${aqi_color}">${geoData[0].name}</p>
+                <p id="cityName" style="color: ${aqi_color}">${locationName}</p>
                 <p class="aqi_number" id="aqiNumber" style="color: ${aqi_color}">${aqi}</p>
                 <p class="aqi_status" id="aqiStatus" style="color: ${aqi_color}">${aqi_status}</p>
             </div>
@@ -200,7 +232,8 @@ const getWeatherData = async () => {
             <div class="card pollutants_card" style="border-left:8px solid ${aqi_color};
             background:${aqi_bg};">
             <h3 style="color:${aqi_color}">Pollutants</h3>
-                <p>PM2.5: <span id="pm25">${pm2_5} μg/m³</span></p>
+                <p>SO2: <span id="so2">${so2} μg/m³</span></p>
+                <p>PM2.5: <span id="pm2_5">${pm2_5} μg/m³</span></p>
                 <p>PM10: <span id="pm10">${pm10} μg/m³</span></p>
                 <p>NO2: <span id="no2">${no2} μg/m³</span></p>
                 <p>CO: <span id="co">${co} μg/m³</span></p>
@@ -227,6 +260,7 @@ const getWeatherData = async () => {
             type: "bar",
             data: {
                 labels: [
+                    "SO2",
                     "PM2.5",
                     "PM10",
                     "NO2",
@@ -234,13 +268,14 @@ const getWeatherData = async () => {
                 ],
                 datasets: [{
                     label: "Pollutant Levels (μg/m³)",
-                    data: [pm2_5, pm10, no2, co],
+                    data: [s02, pm2_5, pm10, no2, co],
                     barThickness: 30,
                     backgroundColor: [
                         "#3b82f6",
                         "#10b981",
                         "#f59e0b",
-                        "#ef4444"
+                        "#ef4444",
+                        "#8b5cf6" 
                     ],
                     borderRadius: 18
                 }]
@@ -255,12 +290,14 @@ const getWeatherData = async () => {
 
         map.flyTo([lat, lon], 13, {duration: 2} );
         if (marker) {
-            marker.setLatLng([lat, lon]);
-            marker.bindPopup(`
-                <b>${geoData[0].name}, ${geoData[0].country}</b><br>
-                AQI: ${aqi} (${aqi_status})<br>
-                Temp: ${temp}°C
-            `);
+            marker
+                .setLatLng([lat, lon])
+                .bindPopup(`
+                    <b>${geoData[0].name}, ${geoData[0].country}</b><br>
+                    AQI: ${aqi} (${aqi_status})<br>
+                    Temp: ${temp}°C
+                `)
+                .openPopup();
         }
         else {
             marker = L.marker([lat, lon])
@@ -269,7 +306,8 @@ const getWeatherData = async () => {
                     <b>${geoData[0].name}, ${geoData[0].country}</b><br>
                     AQI: ${aqi} (${aqi_status})<br>
                     Temp: ${temp}°C
-                `);
+                `)
+                .openPopup();
         }
     }
     catch (error) {
