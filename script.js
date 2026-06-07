@@ -41,9 +41,9 @@ const aqi_number_colors = [
 
 let pollutantChart = null;
 
-const ctx = document.getElementById("pollutantChart");
+const ctx1 = document.getElementById("pollutantChart");
 
-pollutantChart = new Chart(ctx, {
+pollutantChart = new Chart(ctx1, {
     type: "bar",
     data: {
         labels: ["SO2", "PM2.5", "PM10", "NO2", "CO"],
@@ -64,17 +64,27 @@ pollutantChart = new Chart(ctx, {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-            x: { ticks: { color: "rgba(255,255,255,0.6)", font: { family: "Lexend" } }, grid: { color: "rgba(255,255,255,0.07)" } },
-            y: { ticks: { color: "rgba(255,255,255,0.6)", font: { family: "Lexend" } }, grid: { color: "rgba(255,255,255,0.07)" } }
+            x: { ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.07)" } },
+            y: { ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.07)" } }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: "white",
+                    font: {
+                        family: "Lexend"
+                    }
+                }
+            }
         }
     }
 });
 
-const map = L.map("map").setView([20, 0], 2);
-const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+const map = L.map("map").setView([10, 30], 1);
+const tiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
     maxZoom: 19,
     attribution:
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>; CARTO',
 }).addTo(map);
 
 
@@ -92,6 +102,8 @@ function onMapClick(e) {
 }
 map.on('click', onMapClick);
 
+// WEATHER DASHBOARD
+
 const getWeatherData = async () => {
     const city = cityInput.value;
     if (!city.trim()) {
@@ -106,7 +118,7 @@ const getWeatherData = async () => {
         const geoResponse = await fetch(cityLocation);
         const geoData = await geoResponse.json();
         searchBtn.textContent = "Loading…";
-    searchBtn.disabled = true;
+        searchBtn.disabled = true;
 
         if (geoData.length === 0) {
         alert("City not found");
@@ -181,18 +193,21 @@ const getWeatherData = async () => {
                 break;
 
             case 4:
-                recommendation = `• Limit outdoor exposure. Avoid strenuous exercise outside.
+                recommendation = `• Limit outdoor exposure.
+                • Avoid strenuous exercise outside.
                 • Keep windows closed during peak hours.
                 `;
                 break;
 
             case 5:
-                recommendation = `• Avoid outdoor exercise. Use an N95 mask outdoors.
+                recommendation = `• Avoid outdoor exercise.
+                • Use an N95 mask outdoors.
                 • Stay indoors and use air purifiers if available.
                 `;
                 break;
             case 6:
-                recommendation = `• Remain indoors. Avoid all unnecessary outdoor activities.
+                recommendation = `• Remain indoors.
+                • Avoid all unnecessary outdoor activities.
                 • Follow local health advisories closely.
                 `;
                 break;
@@ -239,11 +254,10 @@ const getWeatherData = async () => {
         `;
         // CHART
 
-        const ctx = document.getElementById("pollutantChart");
         if (pollutantChart) {
             pollutantChart.destroy();
         }
-        pollutantChart = new Chart(ctx, {
+        pollutantChart = new Chart(ctx1, {
             type: "bar",
             data: {
                 labels: [
@@ -264,7 +278,7 @@ const getWeatherData = async () => {
                         "#ef4444",
                         "#8b5cf6" 
                     ],
-                    borderRadius: 18
+                    borderRadius: 12
                 }]
             },
             options: {
@@ -318,3 +332,183 @@ cityInput.addEventListener("keydown", (e) => {
         getWeatherData();
     }
 });
+
+// COMPARE CITIES
+
+const city1Input = document.querySelector("#city1");
+const city2Input = document.querySelector("#city2");
+const compare_btn = document.querySelector("#compare_btn");
+let compareChart = null;
+
+const ctx2 = document.getElementById("compareChart");
+
+compareChart = new Chart(ctx2, {
+    type: "bar",
+    data: {
+        labels: ["AQI", "Temperature (°C)", "Humidity %", "PM10 μg/m³", "PM2.5 μg/m³", "WindSpeed (m/s)"],
+        datasets: [
+            {
+                barThickness: 30,
+                label: "City1",
+                data: [0, 0, 0, 0, 0, 0],
+                borderRadius: 10
+            },
+            {
+                barThickness: 30,
+                label: "City2",
+                data: [0, 0, 0, 0, 0, 0],
+                borderRadius: 10
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            title: {
+                display: true,
+                text: "City Comparison",
+                color: "#f0f6ff",
+            },
+            legend: {
+                labels: {
+                    color: "#f0f6ff",
+                    font: {
+                        family: "Lexend"
+                    }
+                }
+            },
+        },
+        scales: {
+            x: { ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.07)" } },
+            y: { beginAtZero: true, ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.09)" } }
+        }
+    }
+});
+
+const compareCities = async () => {
+    const city1 = city1Input.value.trim();
+    const city2 = city2Input.value.trim();
+    if (!city1 || !city2) {
+        alert("Please enter a city name");
+        return;
+    }
+    try {
+        compare_btn.textContent = "Loading…";
+        compare_btn.disabled = true;
+        // LOCATION DATA
+        city1Input.value = "";
+        city2Input.value = "";
+        const city1Location = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city1)}&limit=10&appid=${api_key}`;
+        const city2Location = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city2)}&limit=10&appid=${api_key}`;
+        console.log(city1Location);
+        console.log(city2Location);
+        const geoResponse1 = await fetch(city1Location);
+        const geoResponse2 = await fetch(city2Location);
+        const geoData1 = await geoResponse1.json();
+        const geoData2 = await geoResponse2.json();
+
+        if (geoData1.length === 0 || geoData2.length === 0) {
+            alert("City not found");
+            return;
+        }
+
+        const lat1 = geoData1[0].lat;
+        const lon1 = geoData1[0].lon;    
+        const lat2 = geoData2[0].lat;
+        const lon2 = geoData2[0].lon;
+
+        const weather_api1 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat1}&lon=${lon1}&appid=${api_key}&units=metric`;
+        const weather_api2 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat2}&lon=${lon2}&appid=${api_key}&units=metric`;
+        const weatherResponse1 = await fetch(weather_api1);
+        const weatherResponse2 = await fetch(weather_api2);
+        const weatherData1 = await weatherResponse1.json();
+        const weatherData2 = await weatherResponse2.json();
+        console.log(weatherData1);
+        console.log(weatherData2);
+        const temp1 = Math.round(weatherData1["main"]["temp"]);
+        const temp2 = Math.round(weatherData2["main"]["temp"]);
+        const humidity1 = Math.round(weatherData1["main"]["humidity"]);
+        const humidity2 = Math.round(weatherData2["main"]["humidity"]);
+        const windSpeed1 = Math.round(weatherData1["wind"]["speed"]);
+        const windSpeed2 = Math.round(weatherData2["wind"]["speed"]);
+
+        const aqi_api1 = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat1}&longitude=${lon1}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`;
+        const aqi_api2 = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat2}&longitude=${lon2}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`;
+        const aqiResponse1 = await fetch(aqi_api1);
+        const aqiResponse2 = await fetch(aqi_api2);
+        const aqiData1 = await aqiResponse1.json();
+        const aqiData2 = await aqiResponse2.json();
+        console.log(aqiData1);
+        console.log(aqiData2);
+        const aqi1 = Math.round(aqiData1["current"]["us_aqi"]);
+        const aqi2 = Math.round(aqiData2["current"]["us_aqi"]);
+        const pm10_1st = Math.round(aqiData1["current"]["pm10"]);
+        const pm10_2nd = Math.round(aqiData2["current"]["pm10"]);
+        const pm2_5_1st = Math.round(aqiData1["current"]["pm2_5"]);
+        const pm2_5_2nd = Math.round(aqiData2["current"]["pm2_5"]);
+
+        if (compareChart) {
+            compareChart.destroy();
+        }
+        compareChart = new Chart(ctx2, {
+            type: "bar",
+            data: {
+                labels: ["AQI", "Temperature (°C)", "Humidity %", "PM10 μg/m³", "PM2.5 μg/m³", "WindSpeed (m/s)"],
+                datasets: [
+                    {
+                        barThickness: 30,
+                        label: city1,
+                        data: [aqi1, temp1, humidity1, pm10_1st, pm2_5_1st, windSpeed1],
+                        borderRadius: 10
+                    },
+                    {
+                        barThickness: 30,
+                        label: city2,
+                        data: [aqi2, temp2, humidity2, pm10_2nd, pm2_5_2nd, windSpeed2],
+                        borderRadius: 10
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: "City Comparison",
+                        color: "#f0f6ff",
+                    },
+                    legend: {
+                        labels: {
+                            color: "#f0f6ff",
+                            font: {
+                                family: "Lexend"
+                            }
+                        }
+                    },
+                },
+                scales: {
+                    x: { ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.07)" } },
+                    y: { beginAtZero: true, ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.09)" } }
+                }
+            }
+        });
+    }
+    catch (error) {
+        console.error(error);
+        alert("Unable to compare cities. Please try again.");
+    }
+    finally {
+        compare_btn.textContent = "Compare";
+        compare_btn.disabled = false;
+    }
+}
+
+compare_btn.addEventListener ("click", compareCities)
+
+city1Input.addEventListener ("keydown", (e) => {
+    if (e.key === "Enter") compareCities();
+})
+
+city2Input.addEventListener ("keydown", (e) => {
+    if (e.key === "Enter") compareCities();
+})
