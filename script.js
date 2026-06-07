@@ -30,7 +30,7 @@ const colors = [
     "#dc2626", // Very Unhealthy
     "#7f1d1d"  // Hazardous
 ];
-const backgrounds = [
+const aqi_number_colors = [
     "#dcfce7", // Good
     "#ecfccb", // Moderate
     "#fef9c3", // Unhealthy for Sensitive Groups
@@ -158,7 +158,7 @@ const getWeatherData = async () => {
         else us_aqi = 6;
         const aqi_status = aqi_status_list[us_aqi-1];
         const aqi_color = colors[us_aqi-1];
-        const aqi_bg = backgrounds[us_aqi - 1];
+        const aqi_bg = aqi_number_colors[us_aqi - 1];
         // document.body.style.background = `linear-gradient(135deg,${aqi_bg},white)`;
         
         switch (us_aqi) {
@@ -236,7 +236,7 @@ const getWeatherData = async () => {
                     ${recommendation}
                 </p>
             </div>
-`;
+        `;
         // CHART
 
         const ctx = document.getElementById("pollutantChart");
