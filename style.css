@@ -421,7 +421,8 @@ section {
   }
 
   .cmp_chart {
-    width: 95%;
-    height: 400px;
+    width: 100%;
+    height: 500px;
+    padding: 0.5rem;
   }
 }
