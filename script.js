@@ -345,20 +345,20 @@ const ctx2 = document.getElementById("compareChart");
 compareChart = new Chart(ctx2, {
     type: "bar",
     data: {
-        labels: ["AQI", "Temperature (°C)", "Humidity %", "PM10 μg/m³", "PM2.5 μg/m³", "WindSpeed (m/s)"],
+        labels: ["AQI", "Temp(°C)", "Humidity%", "PM10μg/m³", "PM2.5μg/m³"],
         datasets: [
             {
                 barThickness: window.innerWidth < 768 ? 15 : 30,
                 label: "City1",
                 backgroundColor: "#3b82f6",
-                data: [0, 0, 0, 0, 0, 0],
+                data: [0, 0, 0, 0, 0],
                 borderRadius: 10
             },
             {
                 barThickness: window.innerWidth < 768 ? 15 : 30,
                 label: "City2",
                 backgroundColor: "#10b981",
-                data: [0, 0, 0, 0, 0, 0],
+                data: [0, 0, 0, 0, 0],
                 borderRadius: 10
             }
         ]
@@ -431,8 +431,6 @@ const compareCities = async () => {
         const temp2 = Math.round(weatherData2["main"]["temp"]);
         const humidity1 = Math.round(weatherData1["main"]["humidity"]);
         const humidity2 = Math.round(weatherData2["main"]["humidity"]);
-        const windSpeed1 = Math.round(weatherData1["wind"]["speed"]);
-        const windSpeed2 = Math.round(weatherData2["wind"]["speed"]);
 
         const aqi_api1 = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat1}&longitude=${lon1}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`;
         const aqi_api2 = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat2}&longitude=${lon2}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,sulphur_dioxide,ozone`;
@@ -455,20 +453,20 @@ const compareCities = async () => {
         compareChart = new Chart(ctx2, {
             type: "bar",
             data: {
-                labels: ["AQI", "Temp(°C)", "Humidity%", "PM10μg/m³", "PM2.5μg/m³", "Wind(m/s)"],
+                labels: ["AQI", "Temp(°C)", "Humidity%", "PM10μg/m³", "PM2.5μg/m³"],
                 datasets: [
                     {
                         barThickness: window.innerWidth < 768 ? 15 : 30,
                         label: city1,
                         backgroundColor: "#3b82f6",
-                        data: [aqi1, temp1, humidity1, pm10_1st, pm2_5_1st, windSpeed1],
+                        data: [aqi1, temp1, humidity1, pm10_1st, pm2_5_1st],
                         borderRadius: 10
                     },
                     {
                         barThickness: window.innerWidth < 768 ? 15 : 30,
                         label: city2,
                         backgroundColor: "#10b981",
-                        data: [aqi2, temp2, humidity2, pm10_2nd, pm2_5_2nd, windSpeed2],
+                        data: [aqi2, temp2, humidity2, pm10_2nd, pm2_5_2nd],
                         borderRadius: 10
                     }
                 ]
@@ -491,7 +489,7 @@ const compareCities = async () => {
                     },
                 },
                 scales: {
-                    x: { ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 }, maxRotation: 45, minRotation: 45, }, grid: { color: "rgba(255,255,255,0.07)" } },
+                    x: { ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.07)" } },
                     y: { beginAtZero: true, ticks: { color: "rgba(255,255,255,0.9)", font: { family: "Lexend", size: 14 } }, grid: { color: "rgba(255,255,255,0.09)" } }
                 }
             }
