@@ -59,7 +59,7 @@ section {
 .nav_links a {
   text-decoration: none;
   font-size: 0.88rem;
-  color: rgba(0, 0, 0, 0.95);
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 500;
   padding: 0.55rem 1.1rem;
   border-radius: 999px;
@@ -431,4 +431,73 @@ section {
     height: 500px;
     width: 100%;
   }
+}
+
+
+/* Guide Page */
+
+
+#title3 {
+  margin: 0 auto;
+  width: fit-content;
+  border-bottom: 1px solid #f0f6ff;
+  padding-bottom: 0.5rem;
+}
+
+#faq_section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.faq_item {
+  width: 600px;
+  margin-bottom: 1rem;
+}
+
+.questions {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px 12px 0 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.questions:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+.icon {
+  position: relative;
+  font-size: 1.75rem;
+  font-weight: bold;
+  transition: all 0.4s ease;
+}
+
+.answers {
+  width: 100%;
+  padding: 0 1rem;
+  max-height: 0;
+  overflow: hidden;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 0 0 12px 12px;
+  line-height: 2.2;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.4s ease;
+}
+
+.answers.active {
+  max-height: 500px;
+  padding: 1rem;
 }

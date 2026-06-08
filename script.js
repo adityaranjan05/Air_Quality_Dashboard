@@ -80,7 +80,7 @@ pollutantChart = new Chart(ctx1, {
     }
 });
 
-const map = L.map("map").setView([10, 30], 1);
+const map = L.map("map").setView([10, 30], 2);
 const tiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
     maxZoom: 19,
     attribution:
@@ -516,3 +516,27 @@ city1Input.addEventListener ("keydown", (e) => {
 city2Input.addEventListener ("keydown", (e) => {
     if (e.key === "Enter") compareCities();
 })
+
+
+// Guide Section
+
+
+const questions = document.querySelectorAll(".questions");
+questions.forEach((question) => {
+    question.addEventListener("click", () => {
+        const answer = question.nextElementSibling;
+        const icon = question.querySelector(".icon");
+
+        answer.classList.toggle("active");
+        if(answer.classList.contains("active")) {
+            // icon.textContent = "-";
+            icon.style.transform = "rotate(45deg)";
+            icon.style.color = "rgba(0,0,0,0.6)";
+        }
+        else {
+            // icon.textContent = "+";
+            icon.style.transform = "rotate(0deg)";
+            icon.style.color = "white";
+        }
+    })
+}, false)

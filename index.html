@@ -121,23 +121,147 @@
       <h1 id="title2">Compare Cities</h1>
       <form id="cmp_cities">
         <label for="city1">City 1 :</label>
-        <input type="text" id="city1" placeholder="Enter a city name">
+        <input type="text" id="city1" placeholder="Enter a city name" />
         <label for="city2">City 2 :</label>
-        <input type="text" id="city2" placeholder="Enter a city name">
+        <input type="text" id="city2" placeholder="Enter a city name" />
         <button type="button" id="compare_btn">Compare</button>
       </form>
       <div class="cmp_chart">
-          <canvas id="compareChart"></canvas>
+        <canvas id="compareChart"></canvas>
       </div>
     </section>
 
     <section id="guide">
-      
+      <h1 id="title3">Guide</h1>
+      <div id="faq_section">
+        <div class="faq_item">
+          <div class="questions">
+            <span>1. What is AQI?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            AQI (Air Quality Index) is a measure used to indicate how clean or
+            polluted the air is. Lower AQI values indicate better air quality,
+            while higher values indicate greater health risks.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>2. What does PM2.5 mean?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            PM2.5 refers to tiny particulate matter with a diameter of less than
+            2.5 micrometers. These particles can enter deep into the lungs and
+            may cause respiratory and cardiovascular problems.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>3. What is PM10?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            PM10 consists of larger dust, pollen, and smoke particles with a
+            diameter less than 10 micrometers. High levels can irritate the
+            eyes, nose, and throat.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>4. What is NO₂?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            Nitrogen Dioxide (NO₂) is a harmful gas mainly produced by vehicles,
+            power plants, and industrial activities. High exposure can affect
+            lung function and worsen asthma.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>5. What is CO?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            Carbon Monoxide (CO) is a colorless and odorless gas produced by
+            incomplete combustion of fuels. High concentrations can be dangerous
+            to human health.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>6. How is AQI calculated?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            AQI is calculated using the concentration of pollutants such as
+            PM2.5, PM10, NO₂, CO, SO₂, and O₃. These values are converted into a
+            standardized index.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>7. What AQI level is considered safe?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            <div>AQI 1 - Good</div>
+            <div>AQI 2 - Fair</div>
+            <div>AQI 3 - Moderate</div>
+            <div>AQI 4 - Poor</div>
+            <div>AQI 5 - Very Poor</div>
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>8. Why is monitoring air quality important?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            Monitoring air quality helps people make informed decisions about
+            outdoor activities and helps reduce health risks caused by air
+            pollution.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span>9. How does this dashboard help users?</span>
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            This dashboard provides real-time information about AQI, weather
+            conditions, pollutant levels, health recommendations, and
+            location-based air quality visualization.
+          </div>
+        </div>
+
+        <div class="faq_item">
+          <div class="questions">
+            <span
+              >10. What is the objective of the Plasma Air Interaction
+              Project?</span
+            >
+            <span class="icon">+</span>
+          </div>
+          <div class="answers">
+            The project aims to study the interaction between plasma generated
+            by a Tesla coil and surrounding air, while monitoring environmental
+            parameters and visualizing air quality data through a web dashboard.
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="about">
-      
-    </section>
+    <section id="about"></section>
 
     <script type="module" src="script.js"></script>
   </body>
