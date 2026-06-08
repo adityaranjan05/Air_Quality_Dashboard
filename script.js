@@ -365,6 +365,7 @@ compareChart = new Chart(ctx2, {
     },
     options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             title: {
                 display: true,
@@ -473,6 +474,7 @@ const compareCities = async () => {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     title: {
                         display: true,
