@@ -530,13 +530,13 @@ questions.forEach((question) => {
         answer.classList.toggle("active");
         if(answer.classList.contains("active")) {
             // icon.textContent = "-";
-            icon.style.transform = "rotate(45deg)";
-            icon.style.color = "rgba(0,0,0,0.6)";
+            icon.style.transform = "rotate(135deg)";
+            // icon.style.color = "rgba(0,0,0,0.6)";
         }
         else {
             // icon.textContent = "+";
             icon.style.transform = "rotate(0deg)";
-            icon.style.color = "white";
+            // icon.style.color = "white";
         }
     })
 }, false)
