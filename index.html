@@ -212,11 +212,12 @@
             <span class="icon">+</span>
           </div>
           <div class="answers">
-            <div>AQI 1 - Good</div>
-            <div>AQI 2 - Fair</div>
-            <div>AQI 3 - Moderate</div>
-            <div>AQI 4 - Poor</div>
-            <div>AQI 5 - Very Poor</div>
+            <div>AQI 0-50 : Good</div>
+            <div>AQI 51-100 : Fair</div>
+            <div>AQI 101-150 : Moderate</div>
+            <div>AQI 151-200 : Poor</div>
+            <div>AQI 201-300 : Very Poor</div>
+            <div>AQI >300 : Very Poor</div>
           </div>
         </div>
 
@@ -261,7 +262,61 @@
       </div>
     </section>
 
-    <section id="about"></section>
+    <section id="about">
+      <h1 id="title4">About</h1>
+      <div id="about_content">
+        <div class="about_card">
+          <h3>Project Overview</h3>
+          <p>
+            The Air Quality Dashboard is a real-time web application that enables users to monitor and visualize air quality, weather conditions, and pollutant levels across cities worldwide. It provides important environmental data such as AQI, temperature, humidity, wind speed, and pollutant concentrations through an intuitive interface. The dashboard also includes interactive charts, city comparison tools, and health recommendations to help users better understand and respond to changing air quality conditions.
+          </p>
+        </div>
+
+        <div class="about_card">
+          <h3>Features</h3>
+          <ul>
+            <li>
+              Real-time AQI and pollutant data (SO₂, PM2.5, PM10, NO₂, CO).
+            </li>
+            <li>
+              Live weather conditions including temperature, humidity, and wind speed.
+            </li>
+            <li>Interactive Leaflet.js map with location markers.</li>
+            <li>Side-by-side city comparison with bar charts.</li>
+            <li>Personalized health recommendations based on AQI level.</li>
+            <li>FAQ guide on air quality concepts.</li>
+          </ul>
+        </div>
+
+        <div class="about_card">
+          <h3>Built With</h3>
+          <div class="tech_stack">
+            <span class="tech_badge">- HTML5</span>
+            <span class="tech_badge">- CSS3</span>
+            <span class="tech_badge">- JavaScript (ES Modules)</span>
+            <span class="tech_badge">- Vite</span>
+            <span class="tech_badge">- Leaflet.js</span>
+            <span class="tech_badge">- Chart.js</span>
+            <span class="tech_badge">- OpenWeatherMap API</span>
+            <span class="tech_badge">- Open-Meteo API</span>
+          </div>
+        </div>
+
+        <div class="about_card">
+          <h3>Data Sources</h3>
+          <p>
+            Weather data is sourced from the
+            <a href="https://openweathermap.org/" target="_blank"
+              >OpenWeatherMap API</a
+            >. Air quality and pollutant data is sourced from the
+            <a href="https://open-meteo.com/" target="_blank"
+              >Open-Meteo Air Quality API</a
+            >. Data accuracy depends on these third-party providers and may vary
+            by location.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <script type="module" src="script.js"></script>
   </body>

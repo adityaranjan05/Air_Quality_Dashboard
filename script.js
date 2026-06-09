@@ -517,9 +517,7 @@ city2Input.addEventListener ("keydown", (e) => {
     if (e.key === "Enter") compareCities();
 })
 
-
-// Guide Section
-
+// GUIDE SECTION
 
 const questions = document.querySelectorAll(".questions");
 questions.forEach((question) => {
@@ -540,3 +538,6 @@ questions.forEach((question) => {
         }
     })
 }, false)
+
+// ABOUT SECTION
+

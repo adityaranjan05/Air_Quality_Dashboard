@@ -13,7 +13,7 @@ body {
   background: linear-gradient(135deg,
       #020c1b 0%,
       #0a2340 30%,
-      #0d3d6e 60%,
+      #0d3d6d 60%,
       #0c4f8a 100%);
   color: #f0f6ff;
 }
@@ -59,7 +59,7 @@ section {
 .nav_links a {
   text-decoration: none;
   font-size: 0.88rem;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(0, 0, 0, 0.95);
   font-weight: 500;
   padding: 0.55rem 1.1rem;
   border-radius: 999px;
@@ -154,7 +154,6 @@ section {
   gap: 25px;
   padding: 20px 30px 40px;
 }
-
 
 .card {
   width: 280px;
@@ -401,6 +400,7 @@ section {
   padding: 1rem;
   border-radius: 18px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, .2);
+  transition: all 0.3s ease-in-out;
 }
 
 #compareChart {
@@ -434,7 +434,7 @@ section {
 }
 
 
-/* Guide Page */
+/* -----Guide Page----- */
 
 
 #title3 {
@@ -468,6 +468,7 @@ section {
   border: 1px solid rgba(255,255,255,0.18);
   border-radius: 12px 12px 0 0;
   cursor: pointer;
+  user-select: none;
   transition: all 0.3s ease;
 }
 
@@ -478,8 +479,9 @@ section {
 .icon {
   position: relative;
   font-size: 1.75rem;
-  font-weight: bold;
+  font-weight: 300;
   transition: all 0.4s ease;
+  user-select: none;
 }
 
 .answers {
@@ -513,5 +515,105 @@ section {
 
   .answers {
     padding: 0 0.5rem;
+  }
+}
+
+
+/* -----ABOUT PAGE----- */
+
+
+#title4 {
+  margin: 0 auto;
+  width: fit-content;
+  border-bottom: 1px solid #f0f6ff;
+  padding-bottom: 0.5rem;
+}
+
+#about_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin: 0 auto;
+}
+
+.about_card {
+  width: 350px;
+  min-height: 56vh;
+  margin-top: 5rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: slide-in 0.5s ease-in-out;
+}
+
+.about_card h3 {
+  color: #38bdf8;
+  margin-bottom: 1rem;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 1.22rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.about_card p {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.about_card li {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.about_card .tech_stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  /* flex-direction: column; */
+}
+
+.about_card a {
+  color: #38ebf8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.about_card a:hover {
+  color: #22c55e;
+}
+
+.tech_badge {
+  padding: 6px 14px;
+  /* line-height: 1.5; */
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+  width: fit-content;
+}
+
+.tech_badge:hover {
+  background: linear-gradient(135deg, #22c55e, #14b8a6);
+  color: #000;
+  border-color: transparent;
+}
+
+@media (max-width: 768px) {
+  .about_card {
+    min-height: fit-content;
   }
 }
