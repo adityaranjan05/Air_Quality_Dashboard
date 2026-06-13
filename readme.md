@@ -12,7 +12,7 @@ A real-time web application that visualizes air quality, weather conditions, and
 
 ## Preview
 
-> [Dashboard Screenshot](./1.png)
+> <img src="./1.png">
 
 ---
 
@@ -70,6 +70,7 @@ A real-time web application that visualizes air quality, weather conditions, and
 
 ```
 air-quality-dashboard/
+├── 1.png
 ├── index.html        # Main HTML — all sections (Dashboard, Compare, Guide, About)
 ├── style.css         # Global styles — glassmorphism dark theme
 ├── script.js         # App logic — API calls, charts, map, FAQ interactions
@@ -165,7 +166,7 @@ Air quality and weather data is sourced from third-party APIs (OpenWeatherMap an
 ## Developer
 
 **Aditya**
-- GitHub: [@your-username](https://github.com/adityaranjan05)
+- GitHub: [adityaranjan05](https://github.com/adityaranjan05)
 
 ---
 
